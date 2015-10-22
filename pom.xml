@@ -1,0 +1,117 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.cgi</groupId>
+    <artifactId>szip</artifactId>
+    <version>2.1.0</version>
+    <packaging>nar</packaging>
+
+    <name>SZIP</name>
+    <description>
+        Szip compression software, providing lossless compression of scientific data, has been provided with HDF software products as of HDF5 Release 1.6.0 and HDF4 Release 2.0.
+    </description>
+
+    <properties>
+        <!-- Maven plugin versions -->
+        <nar-plugin.version>3.2.4-SNAPSHOT</nar-plugin.version>
+        <!-- Native project -->
+        <compiler-name>gcc</compiler-name>
+        <linker-name>gcc</linker-name>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.maven-nar</groupId>
+                <artifactId>nar-maven-plugin</artifactId>
+                <version>${nar-plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <cpp>
+                        <name>${compiler-name}</name>
+                        <includes>
+                            <include>**/*.hpp</include>
+                            <include>**/*.h</include>
+                            <include>**/*.cpp</include>
+                            <include>**/*.c</include>
+                        </includes>
+                        <debug>false</debug>
+                        <optimize>full</optimize>
+                        <options combine.children="append">
+                            <!--<option>-std=c++11</option>-->
+                            <!--
+                            <option>-Wall</option>
+                            <option>-Wextra</option>
+                            <option>-pedantic</option>
+                            -->
+                            <option>-fpermissive</option>
+                        </options>
+                    </cpp>
+                    <linker>
+                        <name>${linker-name}</name>
+                    </linker>
+                    <libraries>
+                        <library>
+                            <type>shared</type>
+                        </library>
+                    </libraries>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <profiles>
+        <profile>
+            <id>windows-common</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.maven-nar</groupId>
+                        <artifactId>nar-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <cpp>
+                                <options combine.children="append">
+                                    <option>-mthreads</option>
+                                </options>
+                            </cpp>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>linux-common</id>
+            <activation>
+                <os>
+                    <family>linux</family>
+                </os>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.maven-nar</groupId>
+                        <artifactId>nar-maven-plugin</artifactId>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <cpp>
+                                <options combine.children="append">
+                                    <option>-pthread</option>
+                                </options>
+                            </cpp>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
+
