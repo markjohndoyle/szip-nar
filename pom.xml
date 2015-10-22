@@ -39,13 +39,6 @@
                         <debug>false</debug>
                         <optimize>full</optimize>
                         <options combine.children="append">
-                            <!--<option>-std=c++11</option>-->
-                            <!--
-                            <option>-Wall</option>
-                            <option>-Wextra</option>
-                            <option>-pedantic</option>
-                            -->
-                            <option>-fpermissive</option>
                         </options>
                     </cpp>
                     <linker>
